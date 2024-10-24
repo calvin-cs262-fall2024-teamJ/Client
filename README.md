@@ -1,8 +1,6 @@
-# Sprint 3 Vision Statement
+# Client
+Client Application Code
 
-Dungeon masters (DMs) need an efficient way to organize their world’s information for smooth Dungeons and Dragons gameplay. Keeping track of storylines, characters, locations, and rules can be challenging on paper, so the Journeysmith app addresses this by providing easy access to information to help DMs manage information overload. It allows DMs to upload maps, add pins linked to relevant details, and keep notes on stories and characters. With this system, DMs can quickly find information about different regions and points of interest when needed based on their own style of keeping notes.
+Journeysmith is an app designed for dungeon masters (DMs) who play Dungeons and Dragons to upload their own custom maps and notes in order to keep track of their complex worlds. The app allows DMs to place pins around that map that can be linked with notes on that specific region. 
 
-Unlike DnD Beyond or World Anvil, which have complicated user interfaces and are kept behind an expensive paywall, Journeysmith is free and is made to be simple. The competitors create more information overload by creating complex apps that confuse DMs more with features that they may never use if not a DnD veteran. By reducing the amount of complex features, our product is easy to understand, offers more flexibility, and gives a free way for new DMs to start building worlds quickly. 
- 
-Team Members:
-Luke de Vries, Noro Dung, William Elsen, Saron Melesse, Nathan Schultz, Chase Velloney
+For more details, check the project repository at https://github.com/calvin-cs262-fall2024-teamJ/Project
