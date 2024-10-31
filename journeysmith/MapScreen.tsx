@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, Image, StyleSheet, Pressable, Text, Dimensions} from 'react-native';
+import {View, Image, StyleSheet, Pressable, Text} from 'react-native';
 import {useRoute, RouteProp, useNavigation, NavigationProp} from '@react-navigation/native';
-import NotesBox from './NotesBox';
 
 type RouteParams={
     params:{
@@ -26,15 +25,11 @@ const MapScreen = () => {
     return (
         <View style={styles.container}>
             {imageUri ? (
-                <Image source={{ uri: imageUri }}
-                style={styles.image}
-                resizeMode='contain'
-                />
+                <Image source={{ uri: imageUri }} style={styles.image} />
             ) : null}
             <Pressable style={styles.returnButton} onPress={() => navigation.goBack()}>
                 <Text style={styles.returnButtonText}>Return to map list</Text>
             </Pressable>
-            <NotesBox /> {/* Allow DM to take notes on the side of the mapscreen */}
         </View>
     );
 }
@@ -45,12 +40,10 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'black',
     },
     image:{
-        flex: 1,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        width: 1200,
+        height: 800,
     },
     returnButton: {
         position: 'absolute',
