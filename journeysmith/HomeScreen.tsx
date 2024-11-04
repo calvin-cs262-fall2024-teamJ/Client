@@ -9,7 +9,7 @@ function HomeScreen({ navigation }) {
     <View
       style={styles.background}
     >
-      <Image source={require('./assets/logo.jpg')} style={styles.logo}></Image>
+      <Image source={require('./assets/logo.png')} style={styles.logo}></Image>
       <Text style={styles.welcomeText}>Welcome to Journeysmith!</Text>
       <Pressable style={styles.button} onPress={() => navigation.navigate('MapList')}>
         <Text style={styles.buttonText}>Get Started!</Text>

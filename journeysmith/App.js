@@ -12,19 +12,19 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="MapList">
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="MapList" component={MapListWithOverlay} options={{ headerShown: false }} />
-        <Stack.Screen name="MapScreen" component={MapScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="MapList" component={MapList} options={{ headerShown: false }} />
+        <Stack.Screen name="MapScreen" component={MapScreenWithOverlay} options={{ headerShown: false }} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
   );
 };
 
-const MapListWithOverlay = (props) => (
+const MapScreenWithOverlay = (props) => (
   <View style={{ flex: 1 }}>
-    <MapList {...props} />
+    <MapScreen {...props} />
     <PinOverlay />
   </View>
 );

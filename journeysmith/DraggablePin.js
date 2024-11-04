@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, PanResponder, StyleSheet, Text } from 'react-native';
+import { View, PanResponder, StyleSheet, Text, Image } from 'react-native';
 
 const DraggablePin = ({ initialPosition, onDragEnd, draggable }) => {
   const [position, setPosition] = useState(initialPosition);
@@ -31,9 +31,9 @@ const DraggablePin = ({ initialPosition, onDragEnd, draggable }) => {
   return (
     <View
       {...panResponder.panHandlers}
-      style={[styles.pin, { top: position.y, left: position.x, backgroundColor: isDragging ? 'blue' : 'grey' }]}
+      style={[styles.pin, { top: position.y, left: position.x, backgroundColor: isDragging ? 'blue' : 'transparent' }]}
     >
-      <Text style={styles.pinText}>📍</Text>
+      <Image style={styles.pinImage} source={require('./assets/pinOne.png')} />
     </View>
   );
 };
@@ -47,9 +47,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 15, // Make it circular
   },
-  pinText: {
-    fontSize: 24,
-    color: 'white',
+  pinImage: {
+    width: 50,
+    height: 50,
   },
 });
 

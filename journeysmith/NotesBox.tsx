@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Button, TextInput } from 'react-native';
+import { View, StyleSheet, Button, TextInput, Text, Pressable, Dimensions, useWindowDimensions } from 'react-native';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 // Component to display a text box for notes.
 const NotesBox = () => {
     const [isVisible, setIsVisible] = useState(true);
     const [text, setText] = useState('');
+
+    
 
     //Allow users to toggle visibility off and on
     const toggleVisibility = () => {
@@ -14,7 +17,9 @@ const NotesBox = () => {
     //Display the notes box and show/hide button
     return (
         <View style={styles.container}>
-            <Button title={isVisible ? 'Hide notes' : 'Show notes'} onPress={toggleVisibility} />
+            <Pressable onPress={toggleVisibility}>
+                <Text style={styles.textBoxButton}>Toggle Notes Box</Text>
+            </Pressable>
             {isVisible && (
                 <TextInput
                     style={styles.textBox}
@@ -30,6 +35,8 @@ const NotesBox = () => {
     );
 };
 
+const { width, height } = Dimensions.get('window');
+
 // Styles for the notes box component(Subject to change)
 const styles = StyleSheet.create({
     container: {
@@ -40,14 +47,29 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     textBox: {
-        width: '100%',
-        height: 1200,
+        width: 300,
+        height: height-45,
         textAlignVertical: 'top', 
         textAlign: 'left', 
-        borderColor: 'gray',
-        borderWidth: 1,
+        borderColor: '#1B1921',
+        borderWidth: 3,
         padding: 10, 
         backgroundColor: 'white',
+        position: 'relative',
+        top: -40,
+        right: 0,
+    },
+    textBoxButton: {
+        textAlign: 'center',
+        padding: 10,
+        backgroundColor: '#fff',
+        borderColor: '#1B1921',
+        borderWidth: 3,
+        position: 'relative',
+        top: -40,
+        right: 0,
+        height: 45,
+        width: 300,
     },
 });
 
