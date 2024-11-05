@@ -27,7 +27,7 @@ const PinOverlay = ({ children }) => {
   const handlePress = (e) => {
     if (mode !== 'place') return;
     const { pageX, pageY } = e.nativeEvent;
-    setPins([...pins, { x: pageX, y: pageY }]);
+    setPins([...pins, { x: pageX-14, y: pageY-33 }]);
   };
 
   const handleDragEnd = (index, newPosition) => {
