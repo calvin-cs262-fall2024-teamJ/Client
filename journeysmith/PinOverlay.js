@@ -14,28 +14,6 @@ const PinOverlay = ({ children }) => {
   const [selectedPin, setSelectedPin] = useState(null);
   const [pinText, setPinText] = useState('');
 
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === 'a') {
-        setMode((prevMode) => (prevMode === 'inactive' ? 'normal' : 'inactive'));
-      } else if (e.key === 'p') {
-        setMode((prevMode) => (prevMode === 'place' ? 'normal' : 'place'));
-      } else if (e.key === 'm') {
-        setMode((prevMode) => (prevMode === 'drag' ? 'normal' : 'drag'));
-      } else if (e.key === 'd') {
-        setMode((prevMode) => (prevMode === 'delete' ? 'normal' : 'delete'));
-      } else if (e.key === 'w') {
-        setMode((prevMode) => (prevMode === 'write' ? 'normal' : 'write'));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, []);
-
   const handlePress = (e) => {
     if (mode !== 'place') return;
     const { pageX, pageY } = e.nativeEvent;
