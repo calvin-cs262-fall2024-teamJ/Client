@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
@@ -13,6 +13,7 @@ type RootStackParamList = {
 function MapList() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {width, height} = Dimensions.get('window');
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -28,6 +29,10 @@ function MapList() {
 
   return (
     <>
+      <View style={styles.topBanner}>
+        <Image source={require('./assets/logo.png')} style={styles.logo}></Image>
+        <Text style={styles.welcomeText}>Journeysmith</Text>
+      </View>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.topLeftButton} onPress={pickImage}>
           <Image
@@ -52,6 +57,31 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     backgroundColor: '#1B1921',
+    height: '80%',
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+  },
+  topBanner: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: '100%',
+    height: '20%',
+    backgroundColor: '#1B1921',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  logo: {
+    width: 230,
+    height: 230,
+  },
+  welcomeText: {
+    fontSize: 30,
+    color: '#rgba(245, 245, 220, 1)',
+    fontWeight: 'bold',
   },
   topLeftButton: {
     position: 'absolute',
