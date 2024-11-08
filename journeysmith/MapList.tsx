@@ -34,10 +34,10 @@ function MapList() {
         <Text style={styles.welcomeText}>Journeysmith</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.topLeftButton} onPress={pickImage}>
+        <Pressable style={styles.addButton} onPress={pickImage}>
           <Image
             source={require('./assets/add-map-button.png')}
-            style={styles.profileImage}
+            style={styles.addButtonImage}
           />
         </Pressable>
         {selectedImage && (
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 0,
+    flexDirection: 'row',
   },
   topBanner: {
     position: 'absolute',
@@ -79,30 +80,26 @@ const styles = StyleSheet.create({
     height: 230,
   },
   welcomeText: {
-    fontSize: 30,
+    fontSize: 50,
     color: '#rgba(245, 245, 220, 1)',
-    fontWeight: 'bold',
+    fontFamily: 'Enchanted Land',
   },
-  topLeftButton: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
+  addButton: {
     width: 150,
     height: 150,
   },
-  profileImage: {
+  addButtonImage: {
     width: 150,
     height: 150,
+    marginLeft: 30,
   },
   uploadedImage: {
-    position: 'relative',
-    top: 10,
-    left: 170,
     width: 150,
     height: 150,
     borderRadius: 10,
     borderColor: '#rgba(235, 235, 200, 1)',
     borderWidth: 10,
+    marginLeft: 40,
   },
   returnButton: {
     position: 'absolute',
