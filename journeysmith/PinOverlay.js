@@ -20,6 +20,15 @@ const PinOverlay = ({ children }) => {
     setPins([...pins, { x: pageX - 14, y: pageY - 33, id: Math.random().toString(36).substr(2, 9), text: '' }]);
   };
 
+  const toggleOverlay = () => {
+    setShowOverlay(!showOverlay);
+    if (showOverlay) {
+      setMode('normal');
+    } else {
+      setMode('move');
+    }
+  };
+
   const handleDeletePin = (id) => {
     setPins(pins.filter((pin) => pin.id !== id));
     setShowConfirm(false);
@@ -62,7 +71,7 @@ const PinOverlay = ({ children }) => {
 
   return (
     <View style={styles.overlayContainer}>
-      <TouchableOpacity style={styles.toggleButton} onPress={() => setShowOverlay(!showOverlay)}>
+      <TouchableOpacity style={styles.toggleButton} onPress={() => toggleOverlay()}>
         <Text style={styles.toggleButtonText}>{showOverlay ? "VIEW" : "EDIT"}</Text>
       </TouchableOpacity>
 
