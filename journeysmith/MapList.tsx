@@ -27,7 +27,7 @@ function MapList() {
   };
 
   return (
-    <View style={styles.container}>
+    <>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.topLeftButton} onPress={pickImage}>
           <Image
@@ -44,22 +44,14 @@ function MapList() {
       <Pressable style={styles.returnButton} onPress={() => navigation.goBack()}>
         <Text style={styles.returnButtonText}>Return to home screen</Text>
       </Pressable>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#1B1921',
-  },
   buttonContainer: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    flexDirection: 'row',
+    flex: 1,
+    backgroundColor: '#1B1921',
   },
   topLeftButton: {
     position: 'absolute',
