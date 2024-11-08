@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
@@ -13,6 +13,7 @@ type RootStackParamList = {
 function MapList() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const {width, height} = Dimensions.get('window');
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -27,12 +28,16 @@ function MapList() {
   };
 
   return (
-    <View style={styles.container}>
+    <>
+      <View style={styles.topBanner}>
+        <Image source={require('./assets/logo.png')} style={styles.logo}></Image>
+        <Text style={styles.welcomeText}>Journeysmith</Text>
+      </View>
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.topLeftButton} onPress={pickImage}>
+        <Pressable style={styles.addButton} onPress={pickImage}>
           <Image
             source={require('./assets/add-map-button.png')}
-            style={styles.profileImage}
+            style={styles.addButtonImage}
           />
         </Pressable>
         {selectedImage && (
@@ -44,43 +49,57 @@ function MapList() {
       <Pressable style={styles.returnButton} onPress={() => navigation.goBack()}>
         <Text style={styles.returnButtonText}>Return to home screen</Text>
       </Pressable>
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#1B1921',
-  },
   buttonContainer: {
+    flex: 1,
+    backgroundColor: '#1B1921',
+    height: '80%',
+    width: '100%',
     position: 'absolute',
-    top: 10,
-    left: 10,
+    bottom: 0,
+    right: 0,
     flexDirection: 'row',
   },
-  topLeftButton: {
+  topBanner: {
     position: 'absolute',
-    top: 10,
-    left: 10,
+    top: 0,
+    right: 0,
+    width: '100%',
+    height: '20%',
+    backgroundColor: '#1B1921',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  logo: {
+    width: 230,
+    height: 230,
+  },
+  welcomeText: {
+    fontSize: 50,
+    color: '#rgba(245, 245, 220, 1)',
+    fontFamily: 'Enchanted Land',
+  },
+  addButton: {
     width: 150,
     height: 150,
   },
-  profileImage: {
+  addButtonImage: {
     width: 150,
     height: 150,
+    marginLeft: 30,
   },
   uploadedImage: {
-    position: 'relative',
-    top: 10,
-    left: 170,
     width: 150,
     height: 150,
     borderRadius: 10,
     borderColor: '#rgba(235, 235, 200, 1)',
     borderWidth: 10,
+    marginLeft: 40,
   },
   returnButton: {
     position: 'absolute',
