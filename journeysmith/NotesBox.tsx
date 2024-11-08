@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
     textBox: {
         width: 300,
-        height: height-45,
+        height: height*3/4,
         textAlignVertical: 'top', 
         textAlign: 'left', 
         borderColor: '#1B1921',

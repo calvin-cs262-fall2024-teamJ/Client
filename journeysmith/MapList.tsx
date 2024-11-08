@@ -46,9 +46,6 @@ function MapList() {
           </Pressable>
         )}
       </View>
-      <Pressable style={styles.returnButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.returnButtonText}>Return to home screen</Text>
-      </Pressable>
     </>
   );
 }
