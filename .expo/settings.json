@@ -2,5 +2,13 @@
   "urlRandomness": "d5aPulA",
   "dev": true,
   "minify": false,
+<<<<<<< HEAD
   "https": false
+=======
+  "https": false,
+  "hostType": "tunnel",
+  "lanType": "ip",
+  "scheme": null,
+  "devClient": false
+>>>>>>> 89c2de2c9dfadc4c2153ecf78a0f53db8c4a7891
 }

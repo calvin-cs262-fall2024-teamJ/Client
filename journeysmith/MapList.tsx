@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable, Dimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, Dimensions, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
@@ -11,9 +11,9 @@ type RootStackParamList = {
 };
 
 function MapList() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const {width, height} = Dimensions.get('window');
+  const { width, height } = Dimensions.get('window');
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -23,7 +23,7 @@ function MapList() {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      setSelectedImages([...selectedImages, result.assets[0].uri]);
     }
   };
 
@@ -40,11 +40,15 @@ function MapList() {
             style={styles.addButtonImage}
           />
         </Pressable>
-        {selectedImage && (
-          <Pressable onPress={() => navigation.navigate('MapScreen', { imageUri: selectedImage })}>
-            <Image source={{ uri: selectedImage }} style={styles.uploadedImage} />
-          </Pressable>
-        )}
+        <ScrollView horizontal>
+          {selectedImages.map((imageUri, index) => (
+            <View key={index} style={styles.imageContainer}>
+              <Pressable onPress={() => navigation.navigate('MapScreen', { imageUri })}>
+                <Image source={{ uri: imageUri }} style={styles.uploadedImage} />
+              </Pressable>
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </>
   );
@@ -90,13 +94,15 @@ const styles = StyleSheet.create({
     height: 150,
     marginLeft: 30,
   },
+  imageContainer: {
+    marginLeft: 40,
+  },
   uploadedImage: {
     width: 150,
     height: 150,
     borderRadius: 10,
     borderColor: '#rgba(235, 235, 200, 1)',
     borderWidth: 10,
-    marginLeft: 40,
   },
   returnButton: {
     position: 'absolute',

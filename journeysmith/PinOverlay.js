@@ -14,32 +14,19 @@ const PinOverlay = ({ children }) => {
   const [selectedPin, setSelectedPin] = useState(null);
   const [pinText, setPinText] = useState('');
 
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === 'a') {
-        setMode((prevMode) => (prevMode === 'inactive' ? 'normal' : 'inactive'));
-      } else if (e.key === 'p') {
-        setMode((prevMode) => (prevMode === 'place' ? 'normal' : 'place'));
-      } else if (e.key === 'm') {
-        setMode((prevMode) => (prevMode === 'drag' ? 'normal' : 'drag'));
-      } else if (e.key === 'd') {
-        setMode((prevMode) => (prevMode === 'delete' ? 'normal' : 'delete'));
-      } else if (e.key === 'w') {
-        setMode((prevMode) => (prevMode === 'write' ? 'normal' : 'write'));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, []);
-
   const handlePress = (e) => {
     if (mode !== 'place') return;
     const { pageX, pageY } = e.nativeEvent;
     setPins([...pins, { x: pageX - 14, y: pageY - 33, id: Math.random().toString(36).substr(2, 9), text: '' }]);
+  };
+
+  const toggleOverlay = () => {
+    setShowOverlay(!showOverlay);
+    if (showOverlay) {
+      setMode('normal');
+    } else {
+      setMode('move');
+    }
   };
 
   const handleDeletePin = (id) => {
@@ -84,7 +71,7 @@ const PinOverlay = ({ children }) => {
 
   return (
     <View style={styles.overlayContainer}>
-      <TouchableOpacity style={styles.toggleButton} onPress={() => setShowOverlay(!showOverlay)}>
+      <TouchableOpacity style={styles.toggleButton} onPress={() => toggleOverlay()}>
         <Text style={styles.toggleButtonText}>{showOverlay ? "VIEW" : "EDIT"}</Text>
       </TouchableOpacity>
 
