@@ -4,7 +4,7 @@ import DraggablePin from './DraggablePin';
 
 const PinOverlay = ({ children }) => {
   const [pins, setPins] = useState([]);
-  const [mode, setMode] = useState('inactive'); // 'inactive', 'normal', 'place', 'drag', 'delete', 'write'
+  const [mode, setMode] = useState('inactive'); // 'inactive', 'normal', 'place', 'drag', 'delete', 'write', 'move'
   const [showOverlay, setShowOverlay] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showWrite, setShowWrite] = useState(false);
@@ -13,7 +13,7 @@ const PinOverlay = ({ children }) => {
   const [selectedPin, setSelectedPin] = useState(null);
   const [pinText, setPinText] = useState('');
   const [showMenu, setShowMenu] = useState(false);
-  const { x, y };
+  const [pinCoordinates, setPinCoordinates] = useState({ x: 0, y: 0 });
 
   const handlePress = (e) => {
     if (mode !== 'place') return;
@@ -21,15 +21,6 @@ const PinOverlay = ({ children }) => {
     setPins([...pins, { x: pageX - 14, y: pageY - 33, id: Math.random().toString(36).substr(2, 9), text: '' }]);
     setMode('normal');
   };
-
-  // const toggleOverlay = () => {
-  //   setShowOverlay(!showOverlay);
-  //   if (showOverlay) {
-  //     setMode('normal');
-  //   } else {
-  //     setMode('move');
-  //   }
-  // };
 
   const handleDeletePin = (id) => {
     setPins(pins.filter((pin) => pin.id !== id));
@@ -58,10 +49,13 @@ const PinOverlay = ({ children }) => {
       handleWritePin(pin);
     } else if (mode === 'normal') {
       setSelectedPin(pin);
-      { x, y } === getSelectedPinCoordinates();
-      setShowMenu(!showMenu);
+      const { x, y } = getSelectedPinCoordinates(pin);
+      setPinCoordinates({ x, y });
+      setTimeout(() => {
+        setShowMenu(!showMenu);
+      }, 0);
     } else {
-      console.log('Pin clicked!');
+      setMode('normal');
     }
   };
 
@@ -73,13 +67,10 @@ const PinOverlay = ({ children }) => {
     setShowWrite(false);
   };
 
-  const getSelectedPinCoordinates = () => {
-    if (!selectedPin) return { x: 0, y: 0 };
-    const pin = pins.find((p) => p.id === selectedPin.id);
-    return pin ? { x: pin.x, y: pin.y } : { x: 0, y: 0 };
+  const getSelectedPinCoordinates = (pin) => {
+    if (!pin) return { x: 0, y: 0 };
+    return { x: pin.x, y: pin.y };
   };
-
-  
 
   return (
     <View style={styles.overlayContainer}>
@@ -97,18 +88,9 @@ const PinOverlay = ({ children }) => {
         <>
           {children}
           <View style={styles.leftPanel}>
-            {/* <TouchableOpacity onPress={() => setMode('drag')} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Move Pin</Text>
-            </TouchableOpacity> */}
             <Pressable onPress={() => setMode('place')} style={styles.buttonStyle}>
               <Text style={styles.buttonText}>Place pin</Text>
             </Pressable>
-            {/* <TouchableOpacity onPress={() => setMode('delete')} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMode('write')} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Write</Text>
-            </TouchableOpacity> */}
           </View>
           {mode === 'place' && (
             <TouchableWithoutFeedback onPress={handlePress}>
@@ -119,10 +101,20 @@ const PinOverlay = ({ children }) => {
       )}
 
       {showMenu && selectedPin && (
-        // <Modal style={styles.pinOption}>
-        x, y = getSelectedPinCoordinates();
-        <View style={[styles.pinOption, {getSelectedPinCoordinates}]}></View>
-        // </Modal>
+        <View style={[styles.pinOption, { left: pinCoordinates.x, top: pinCoordinates.y }]}>
+          <Pressable onPress={() => handleWritePin(selectedPin)}>
+            <Text>Edit</Text>
+          </Pressable>
+          <Pressable onPress={() => setMode('delete')}>
+            <Text>Delete</Text>
+          </Pressable>
+          <Pressable onPress={() => setShowText(true)}>
+            <Text>View</Text>
+          </Pressable>
+          <Pressable onPress={() => setMode('move')}>
+            <Text>Move</Text>
+          </Pressable>
+        </View>
       )}
 
       {showText && selectedPin && (
@@ -146,7 +138,7 @@ const PinOverlay = ({ children }) => {
           transparent={true}
           animationType="fade"
           visible={showWrite}
-          onRequestClose={() => setShowWrite(false)}
+          onRequestClose={savePinText} // Save text when modal is closed
         >
           <View style={styles.modalBackground}>
             <View style={[styles.modalContainer, styles.editModalBackground]}>
@@ -159,7 +151,7 @@ const PinOverlay = ({ children }) => {
               />
               <View style={styles.modalButtonContainer}>
                 <Button title="Save" onPress={savePinText} />
-                <Button title="Close" onPress={() => setShowWrite(false)} />
+                <Button title="Close" onPress={savePinText} />
               </View>
             </View>
           </View>
@@ -188,7 +180,6 @@ const PinOverlay = ({ children }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   buttonStyle: {
     backgroundColor: '#rgba(245, 245, 220, 1)',
@@ -205,9 +196,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   pinOption: {
+    position: 'absolute',
     backgroundColor: 'white',
-    width: 200,
-    height: 200,
+    padding: 10,
+    borderRadius: 5,
   },
   overlayContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -302,6 +294,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    width: '100%',
+    paddingHorizontal: 10,
   },
 });
 
