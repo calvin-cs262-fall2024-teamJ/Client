@@ -60,12 +60,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 10,
         left: 10,
-        padding: 10,
         backgroundColor: '#rgba(245, 245, 220, 1)',
         borderRadius: 10,
+        padding: 8,
     },
     returnButtonText: {
         color: '#000',
+        fontFamily: 'Enchanted Land',
+        fontSize: 20,
+        fontWeight: 'bold',
     },
     pinButton: {
         backgroundColor: '#rgba(245, 245, 220, 1)',

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Text, TouchableOpacity, Button, Modal, TextInput } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Text, TouchableOpacity, Button, Modal, TextInput, Pressable, Image } from 'react-native';
 import DraggablePin from './DraggablePin';
 
 const PinOverlay = ({ children }) => {
   const [pins, setPins] = useState([]);
   const [mode, setMode] = useState('inactive'); // 'inactive', 'normal', 'place', 'drag', 'delete', 'write'
   const [showOverlay, setShowOverlay] = useState(false);
-  const [showPins, setShowPins] = useState(true);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showWrite, setShowWrite] = useState(false);
   const [showText, setShowText] = useState(false);
@@ -18,20 +17,22 @@ const PinOverlay = ({ children }) => {
     if (mode !== 'place') return;
     const { pageX, pageY } = e.nativeEvent;
     setPins([...pins, { x: pageX - 14, y: pageY - 33, id: Math.random().toString(36).substr(2, 9), text: '' }]);
+    setMode('normal');
   };
 
-  const toggleOverlay = () => {
-    setShowOverlay(!showOverlay);
-    if (showOverlay) {
-      setMode('normal');
-    } else {
-      setMode('move');
-    }
-  };
+  // const toggleOverlay = () => {
+  //   setShowOverlay(!showOverlay);
+  //   if (showOverlay) {
+  //     setMode('normal');
+  //   } else {
+  //     setMode('move');
+  //   }
+  // };
 
   const handleDeletePin = (id) => {
     setPins(pins.filter((pin) => pin.id !== id));
     setShowConfirm(false);
+    setMode('normal');
   };
 
   const handleWritePin = (pin) => {
@@ -71,15 +72,7 @@ const PinOverlay = ({ children }) => {
 
   return (
     <View style={styles.overlayContainer}>
-      <TouchableOpacity style={styles.toggleButton} onPress={() => toggleOverlay()}>
-        <Text style={styles.toggleButtonText}>{showOverlay ? "VIEW" : "EDIT"}</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.activeToggleButton} onPress={() => setShowPins(!showPins)}>
-        <Text style={styles.toggleButtonText}>{showPins ? "HIDE PINS" : "SHOW PINS"}</Text>
-      </TouchableOpacity>
-
-      {showPins && pins.map((pin) => (
+      {pins.map((pin) => (
         <TouchableOpacity key={pin.id} onPress={() => handlePinClick(pin)}>
           <DraggablePin
             initialPosition={{ x: pin.x, y: pin.y }}
@@ -89,48 +82,29 @@ const PinOverlay = ({ children }) => {
         </TouchableOpacity>
       ))}
 
-      {showOverlay && (
+      {(
         <>
           {children}
           <View style={styles.leftPanel}>
-            <TouchableOpacity onPress={() => setMode('drag')} style={styles.buttonStyle}>
+            {/* <TouchableOpacity onPress={() => setMode('drag')} style={styles.buttonStyle}>
               <Text style={styles.buttonText}>Move Pin</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMode('place')} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Place</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMode('delete')} style={styles.buttonStyle}>
+            </TouchableOpacity> */}
+            <Pressable onPress={() => setMode('place')} style={styles.buttonStyle}>
+              <Text style={styles.buttonText}>Place pin</Text>
+            </Pressable>
+            {/* <TouchableOpacity onPress={() => setMode('delete')} style={styles.buttonStyle}>
               <Text style={styles.buttonText}>Delete</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setMode('write')} style={styles.buttonStyle}>
               <Text style={styles.buttonText}>Write</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           {mode === 'place' && (
             <TouchableWithoutFeedback onPress={handlePress}>
               <View style={styles.touchArea} />
             </TouchableWithoutFeedback>
           )}
-          <View style={styles.statusBar}>
-            <Text style={styles.statusText}>Current Mode: {mode}</Text>
-          </View>
         </>
-      )}
-
-      {showText && selectedPin && (
-        <Modal
-          transparent={true}
-          animationType="fade"
-          visible={showText}
-          onRequestClose={() => setShowText(false)}
-        >
-          <View style={styles.modalBackground}>
-            <View style={styles.textModalContainer}>
-              <Text style={styles.textModalContent}>{selectedPin.text}</Text>
-              <Button title="Close" onPress={() => setShowText(false)} />
-            </View>
-          </View>
-        </Modal>
       )}
 
       {showWrite && selectedPin && (
@@ -184,14 +158,17 @@ const PinOverlay = ({ children }) => {
 const styles = StyleSheet.create({
 buttonStyle: {
   backgroundColor: '#rgba(245, 245, 220, 1)',
-  padding: 10,
-  borderRadius: 5,
+  borderRadius: 10,
   marginBottom: 10,
+  width: 110,
+  padding: 8,
 },
 buttonText: {
   color: 'black',
   fontWeight: 'bold',
   textAlign: 'center',
+  fontFamily: 'Enchanted Land',
+  fontSize: 20,
 },
 
   overlayContainer: {
@@ -221,6 +198,9 @@ buttonText: {
   toggleButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  pinButtonImage: {
+    resizeMode: 'fill',
   },
   leftPanel: {
     justifyContent: 'center',
