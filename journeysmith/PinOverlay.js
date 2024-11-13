@@ -12,6 +12,8 @@ const PinOverlay = ({ children }) => {
   const [pinToDelete, setPinToDelete] = useState(null);
   const [selectedPin, setSelectedPin] = useState(null);
   const [pinText, setPinText] = useState('');
+  const [showMenu, setShowMenu] = useState(false);
+  const { x, y };
 
   const handlePress = (e) => {
     if (mode !== 'place') return;
@@ -56,7 +58,8 @@ const PinOverlay = ({ children }) => {
       handleWritePin(pin);
     } else if (mode === 'normal') {
       setSelectedPin(pin);
-      setShowText(true);
+      { x, y } === getSelectedPinCoordinates();
+      setShowMenu(!showMenu);
     } else {
       console.log('Pin clicked!');
     }
@@ -69,6 +72,14 @@ const PinOverlay = ({ children }) => {
     setPins(updatedPins);
     setShowWrite(false);
   };
+
+  const getSelectedPinCoordinates = () => {
+    if (!selectedPin) return { x: 0, y: 0 };
+    const pin = pins.find((p) => p.id === selectedPin.id);
+    return pin ? { x: pin.x, y: pin.y } : { x: 0, y: 0 };
+  };
+
+  
 
   return (
     <View style={styles.overlayContainer}>
@@ -105,6 +116,29 @@ const PinOverlay = ({ children }) => {
             </TouchableWithoutFeedback>
           )}
         </>
+      )}
+
+      {showMenu && selectedPin && (
+        // <Modal style={styles.pinOption}>
+        x, y = getSelectedPinCoordinates();
+        <View style={[styles.pinOption, {getSelectedPinCoordinates}]}></View>
+        // </Modal>
+      )}
+
+      {showText && selectedPin && (
+        <Modal
+          transparent={true}
+          animationType="fade"
+          visible={showText}
+          onRequestClose={() => setShowText(false)}
+        >
+          <View style={styles.modalBackground}>
+            <View style={styles.textModalContainer}>
+              <Text style={styles.textModalContent}>{selectedPin.text}</Text>
+              <Button title="Close" onPress={() => setShowText(false)} />
+            </View>
+          </View>
+        </Modal>
       )}
 
       {showWrite && selectedPin && (
@@ -156,21 +190,25 @@ const PinOverlay = ({ children }) => {
 
 
 const styles = StyleSheet.create({
-buttonStyle: {
-  backgroundColor: '#rgba(245, 245, 220, 1)',
-  borderRadius: 10,
-  marginBottom: 10,
-  width: 110,
-  padding: 8,
-},
-buttonText: {
-  color: 'black',
-  fontWeight: 'bold',
-  textAlign: 'center',
-  fontFamily: 'Enchanted Land',
-  fontSize: 20,
-},
-
+  buttonStyle: {
+    backgroundColor: '#rgba(245, 245, 220, 1)',
+    borderRadius: 10,
+    marginBottom: 10,
+    width: 110,
+    padding: 8,
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'Enchanted Land',
+    fontSize: 20,
+  },
+  pinOption: {
+    backgroundColor: 'white',
+    width: 200,
+    height: 200,
+  },
   overlayContainer: {
     ...StyleSheet.absoluteFillObject,
     flexDirection: 'row',
