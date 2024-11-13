@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableWithoutFeedback, Text, TouchableOpacity, But
 import DraggablePin from './DraggablePin';
 
 const PinOverlay = ({ children }) => {
-  const [pins, setPins] = useState([]);
+  const [pins, setPins] = useState({});
   const [mode, setMode] = useState('inactive'); // 'inactive', 'normal', 'place', 'drag', 'delete', 'write', 'move'
   const [showOverlay, setShowOverlay] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -18,7 +18,8 @@ const PinOverlay = ({ children }) => {
   const handlePress = (e) => {
     if (mode !== 'place') return;
     const { pageX, pageY } = e.nativeEvent;
-    setPins([...pins, { x: pageX - 14, y: pageY - 33, id: Math.random().toString(36).substr(2, 9), text: '' }]);
+    const id = Math.random().toString(36).substr(2, 9);
+    setPins({ ...pins, [id]: { x: pageX - 14, y: pageY - 33, id, text: '' } });
     setMode('normal');
   };
 
@@ -35,16 +36,19 @@ const PinOverlay = ({ children }) => {
   };
 
   const handleDragEnd = (id, newPosition) => {
-    const updatedPins = pins.map((pin) =>
-      pin.id === id ? { ...pin, x: newPosition.x, y: newPosition.y } : pin
-    );
-    setPins(updatedPins);
+    setPins({ ...pins, [id]: { ...pins[id], x: newPosition.x, y: newPosition.y } });
+    setMode('nullmode');
+  };
+
+  const handleMoveSelection = () => {
+    setShowMenu(false);
+    setMode('drag');
   };
 
   const handlePinClick = (pin) => {
     if (mode === 'delete') {
-      setPinToDelete(pin.id);
-      setShowConfirm(true);
+      const { [pin.id]: _, ...rest } = pins;
+      setPins(rest);
     } else if (mode === 'write') {
       handleWritePin(pin);
     } else if (mode === 'normal') {
@@ -60,10 +64,7 @@ const PinOverlay = ({ children }) => {
   };
 
   const savePinText = () => {
-    const updatedPins = pins.map((pin) =>
-      pin.id === selectedPin.id ? { ...pin, text: pinText } : pin
-    );
-    setPins(updatedPins);
+    setPins({ ...pins, [selectedPin.id]: { ...selectedPin, text: pinText } });
     setShowWrite(false);
   };
 
@@ -74,7 +75,7 @@ const PinOverlay = ({ children }) => {
 
   return (
     <View style={styles.overlayContainer}>
-      {pins.map((pin) => (
+      {Object.values(pins).map((pin) => (
         <TouchableOpacity key={pin.id} onPress={() => handlePinClick(pin)}>
           <DraggablePin
             initialPosition={{ x: pin.x, y: pin.y }}
@@ -111,7 +112,7 @@ const PinOverlay = ({ children }) => {
           <Pressable onPress={() => setShowText(true)}>
             <Text>View</Text>
           </Pressable>
-          <Pressable onPress={() => setMode('move')}>
+          <Pressable onPress={() => handleMoveSelection()}>
             <Text>Move</Text>
           </Pressable>
         </View>
