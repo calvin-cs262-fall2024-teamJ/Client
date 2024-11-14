@@ -102,18 +102,18 @@ const PinOverlay = ({ children }) => {
       )}
 
       {showMenu && selectedPin && (
-        <View style={[styles.pinOption, { left: pinCoordinates.x, top: pinCoordinates.y }]}>
+        <View style={[styles.pinOption, { left: pinCoordinates.x - 30, top: pinCoordinates.y - 45 }]}>
           <Pressable onPress={() => handleWritePin(selectedPin)}>
-            <Text>Edit</Text>
+            <Image style={styles.icon} source={require('./assets/edit_icon.png')} />
           </Pressable>
           <Pressable onPress={() => setMode('delete')}>
-            <Text>Delete</Text>
+            <Image style={styles.icon} source={require('./assets/delete_icon.png')} />
           </Pressable>
           <Pressable onPress={() => setShowText(true)}>
-            <Text>View</Text>
+            <Image style={styles.icon} source={require('./assets/view_icon.png')} />
           </Pressable>
           <Pressable onPress={() => handleMoveSelection()}>
-            <Text>Move</Text>
+            <Image style={styles.icon} source={require('./assets/move_icon.png')} />
           </Pressable>
         </View>
       )}
@@ -198,9 +198,14 @@ const styles = StyleSheet.create({
   },
   pinOption: {
     position: 'absolute',
-    backgroundColor: 'white',
+    backgroundColor: '#rgba(245, 245, 220, 1)',
     padding: 10,
     borderRadius: 5,
+    flexDirection: 'row',
+  },
+  icon: {
+    width: 20,
+    height: 20,
   },
   overlayContainer: {
     ...StyleSheet.absoluteFillObject,
