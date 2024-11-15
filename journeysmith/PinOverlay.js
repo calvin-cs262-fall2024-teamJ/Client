@@ -1,37 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, Text, TouchableOpacity, Button, Modal, TextInput } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Text, TouchableOpacity, Button, Modal, TextInput, Pressable, Image } from 'react-native';
 import DraggablePin from './DraggablePin';
 
 const PinOverlay = ({ children }) => {
-  const [pins, setPins] = useState([]);
-  const [mode, setMode] = useState('inactive'); // 'inactive', 'normal', 'place', 'drag', 'delete', 'write'
+  const [pins, setPins] = useState({});
+  const [mode, setMode] = useState('inactive'); // 'inactive', 'normal', 'place', 'drag', 'delete', 'write', 'move'
   const [showOverlay, setShowOverlay] = useState(false);
-  const [showPins, setShowPins] = useState(true);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showWrite, setShowWrite] = useState(false);
   const [showText, setShowText] = useState(false);
   const [pinToDelete, setPinToDelete] = useState(null);
   const [selectedPin, setSelectedPin] = useState(null);
   const [pinText, setPinText] = useState('');
+  const [showMenu, setShowMenu] = useState(false);
+  const [pinCoordinates, setPinCoordinates] = useState({ x: 0, y: 0 });
 
   const handlePress = (e) => {
     if (mode !== 'place') return;
     const { pageX, pageY } = e.nativeEvent;
-    setPins([...pins, { x: pageX - 14, y: pageY - 33, id: Math.random().toString(36).substr(2, 9), text: '' }]);
-  };
-
-  const toggleOverlay = () => {
-    setShowOverlay(!showOverlay);
-    if (showOverlay) {
-      setMode('normal');
-    } else {
-      setMode('move');
-    }
+    const id = Math.random().toString(36).substr(2, 9);
+    setPins({ ...pins, [id]: { x: pageX - 14, y: pageY - 33, id, text: '' } });
+    setMode('normal');
   };
 
   const handleDeletePin = (id) => {
     setPins(pins.filter((pin) => pin.id !== id));
     setShowConfirm(false);
+    setMode('normal');
   };
 
   const handleWritePin = (pin) => {
@@ -41,45 +36,46 @@ const PinOverlay = ({ children }) => {
   };
 
   const handleDragEnd = (id, newPosition) => {
-    const updatedPins = pins.map((pin) =>
-      pin.id === id ? { ...pin, x: newPosition.x, y: newPosition.y } : pin
-    );
-    setPins(updatedPins);
+    setPins({ ...pins, [id]: { ...pins[id], x: newPosition.x, y: newPosition.y } });
+    setMode('nullmode');
+  };
+
+  const handleMoveSelection = () => {
+    setShowMenu(false);
+    setMode('drag');
   };
 
   const handlePinClick = (pin) => {
     if (mode === 'delete') {
-      setPinToDelete(pin.id);
-      setShowConfirm(true);
+      const { [pin.id]: _, ...rest } = pins;
+      setPins(rest);
     } else if (mode === 'write') {
       handleWritePin(pin);
     } else if (mode === 'normal') {
       setSelectedPin(pin);
-      setShowText(true);
+      const { x, y } = getSelectedPinCoordinates(pin);
+      setPinCoordinates({ x, y });
+      setTimeout(() => {
+        setShowMenu(!showMenu);
+      }, 0);
     } else {
-      console.log('Pin clicked!');
+      setMode('normal');
     }
   };
 
   const savePinText = () => {
-    const updatedPins = pins.map((pin) =>
-      pin.id === selectedPin.id ? { ...pin, text: pinText } : pin
-    );
-    setPins(updatedPins);
+    setPins({ ...pins, [selectedPin.id]: { ...selectedPin, text: pinText } });
     setShowWrite(false);
+  };
+
+  const getSelectedPinCoordinates = (pin) => {
+    if (!pin) return { x: 0, y: 0 };
+    return { x: pin.x, y: pin.y };
   };
 
   return (
     <View style={styles.overlayContainer}>
-      <TouchableOpacity style={styles.toggleButton} onPress={() => toggleOverlay()}>
-        <Text style={styles.toggleButtonText}>{showOverlay ? "VIEW" : "EDIT"}</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.activeToggleButton} onPress={() => setShowPins(!showPins)}>
-        <Text style={styles.toggleButtonText}>{showPins ? "HIDE PINS" : "SHOW PINS"}</Text>
-      </TouchableOpacity>
-
-      {showPins && pins.map((pin) => (
+      {Object.values(pins).map((pin) => (
         <TouchableOpacity key={pin.id} onPress={() => handlePinClick(pin)}>
           <DraggablePin
             initialPosition={{ x: pin.x, y: pin.y }}
@@ -89,32 +85,37 @@ const PinOverlay = ({ children }) => {
         </TouchableOpacity>
       ))}
 
-      {showOverlay && (
+      {(
         <>
           {children}
           <View style={styles.leftPanel}>
-            <TouchableOpacity onPress={() => setMode('drag')} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Move Pin</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMode('place')} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Place</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMode('delete')} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Delete</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setMode('write')} style={styles.buttonStyle}>
-              <Text style={styles.buttonText}>Write</Text>
-            </TouchableOpacity>
+            <Pressable onPress={() => setMode('place')} style={styles.buttonStyle}>
+              <Text style={styles.buttonText}>Place pin</Text>
+            </Pressable>
           </View>
           {mode === 'place' && (
             <TouchableWithoutFeedback onPress={handlePress}>
               <View style={styles.touchArea} />
             </TouchableWithoutFeedback>
           )}
-          <View style={styles.statusBar}>
-            <Text style={styles.statusText}>Current Mode: {mode}</Text>
-          </View>
         </>
+      )}
+
+      {showMenu && selectedPin && (
+        <View style={[styles.pinOption, { left: pinCoordinates.x - 30, top: pinCoordinates.y - 45 }]}>
+          <Pressable onPress={() => handleWritePin(selectedPin)}>
+            <Image style={styles.icon} source={require('./assets/edit_icon.png')} />
+          </Pressable>
+          <Pressable onPress={() => setMode('delete')}>
+            <Image style={styles.icon} source={require('./assets/delete_icon.png')} />
+          </Pressable>
+          <Pressable onPress={() => setShowText(true)}>
+            <Image style={styles.icon} source={require('./assets/view_icon.png')} />
+          </Pressable>
+          <Pressable onPress={() => handleMoveSelection()}>
+            <Image style={styles.icon} source={require('./assets/move_icon.png')} />
+          </Pressable>
+        </View>
       )}
 
       {showText && selectedPin && (
@@ -138,7 +139,7 @@ const PinOverlay = ({ children }) => {
           transparent={true}
           animationType="fade"
           visible={showWrite}
-          onRequestClose={() => setShowWrite(false)}
+          onRequestClose={savePinText} // Save text when modal is closed
         >
           <View style={styles.modalBackground}>
             <View style={[styles.modalContainer, styles.editModalBackground]}>
@@ -151,7 +152,7 @@ const PinOverlay = ({ children }) => {
               />
               <View style={styles.modalButtonContainer}>
                 <Button title="Save" onPress={savePinText} />
-                <Button title="Close" onPress={() => setShowWrite(false)} />
+                <Button title="Close" onPress={savePinText} />
               </View>
             </View>
           </View>
@@ -180,20 +181,32 @@ const PinOverlay = ({ children }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
-buttonStyle: {
-  backgroundColor: '#rgba(245, 245, 220, 1)',
-  padding: 10,
-  borderRadius: 5,
-  marginBottom: 10,
-},
-buttonText: {
-  color: 'black',
-  fontWeight: 'bold',
-  textAlign: 'center',
-},
-
+  buttonStyle: {
+    backgroundColor: '#rgba(245, 245, 220, 1)',
+    borderRadius: 10,
+    marginBottom: 10,
+    width: 110,
+    padding: 8,
+  },
+  buttonText: {
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'Enchanted Land',
+    fontSize: 20,
+  },
+  pinOption: {
+    position: 'absolute',
+    backgroundColor: '#rgba(245, 245, 220, 1)',
+    padding: 10,
+    borderRadius: 5,
+    flexDirection: 'row',
+  },
+  icon: {
+    width: 20,
+    height: 20,
+  },
   overlayContainer: {
     ...StyleSheet.absoluteFillObject,
     flexDirection: 'row',
@@ -221,6 +234,9 @@ buttonText: {
   toggleButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  pinButtonImage: {
+    resizeMode: 'fill',
   },
   leftPanel: {
     justifyContent: 'center',
@@ -284,6 +300,14 @@ buttonText: {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    width: '100%',
+    paddingHorizontal: 10,
   },
 });
 
