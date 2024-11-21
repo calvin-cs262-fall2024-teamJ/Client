@@ -5,11 +5,9 @@ import DraggablePin from './DraggablePin';
 const PinOverlay = ({ children }) => {
   const [pins, setPins] = useState({});
   const [mode, setMode] = useState('inactive'); // 'inactive', 'normal', 'place', 'drag', 'delete', 'write', 'move'
-  const [showOverlay, setShowOverlay] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showWrite, setShowWrite] = useState(false);
   const [showText, setShowText] = useState(false);
-  const [pinToDelete, setPinToDelete] = useState(null);
   const [selectedPin, setSelectedPin] = useState(null);
   const [pinText, setPinText] = useState('');
   const [showMenu, setShowMenu] = useState(false);
@@ -27,11 +25,11 @@ const PinOverlay = ({ children }) => {
     setPins(pins.filter((pin) => pin.id !== id));
     setShowConfirm(false);
     setMode('normal');
+    setShowMenu(false);
   };
 
-  const handleWritePin = (pin) => {
-    setSelectedPin(pin);
-    setPinText(pin.text);
+  const handleWritePin = () => {
+    setPinText(selectedPin.text);
     setShowWrite(true);
   };
 
@@ -64,7 +62,12 @@ const PinOverlay = ({ children }) => {
   };
 
   const savePinText = () => {
+    console.log(selectedPin.text);
+    console.log(pinText);
     setPins({ ...pins, [selectedPin.id]: { ...selectedPin, text: pinText } });
+    setSelectedPin({ ...selectedPin, text: pinText });
+    console.log(selectedPin.text);
+    console.log(pinText);
     setShowWrite(false);
   };
 
@@ -106,7 +109,7 @@ const PinOverlay = ({ children }) => {
           <Pressable onPress={() => handleWritePin(selectedPin)}>
             <Image style={styles.icon} source={require('./assets/edit_icon.png')} />
           </Pressable>
-          <Pressable onPress={() => setMode('delete')}>
+          <Pressable onPress={() => handleDeletePin(selectedPin.id)}>
             <Image style={styles.icon} source={require('./assets/delete_icon.png')} />
           </Pressable>
           <Pressable onPress={() => setShowText(true)}>
@@ -119,28 +122,15 @@ const PinOverlay = ({ children }) => {
       )}
 
       {showText && selectedPin && (
-        <Modal
-          transparent={true}
-          animationType="fade"
-          visible={showText}
-          onRequestClose={() => setShowText(false)}
-        >
           <View style={styles.modalBackground}>
             <View style={styles.textModalContainer}>
               <Text style={styles.textModalContent}>{selectedPin.text}</Text>
               <Button title="Close" onPress={() => setShowText(false)} />
             </View>
           </View>
-        </Modal>
       )}
 
       {showWrite && selectedPin && (
-        <Modal
-          transparent={true}
-          animationType="fade"
-          visible={showWrite}
-          onRequestClose={savePinText} // Save text when modal is closed
-        >
           <View style={styles.modalBackground}>
             <View style={[styles.modalContainer, styles.editModalBackground]}>
               <Text style={styles.modalText}>Edit Pin Text</Text>
@@ -156,7 +146,6 @@ const PinOverlay = ({ children }) => {
               </View>
             </View>
           </View>
-        </Modal>
       )}
 
       {showConfirm && (
