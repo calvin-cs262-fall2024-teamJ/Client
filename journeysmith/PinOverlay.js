@@ -129,20 +129,22 @@ const PinOverlay = ({ children }) => {
       )}
 
       {showWrite && selectedPin && (
-        <View style={styles.editBox}>
-          <TextInput
-            style={styles.textInput}
-            value={pinText}
-            onChangeText={setPinText}
-            placeholder="Enter text here..."
-          />
-          <View style={styles.modalButtonContainer}>
-            <Pressable style={styles.optionButtonLeft} onPress={savePinText}>
-              <Text>Save</Text>
-            </Pressable>
-            <Pressable style={styles.optionButtonRight} onPress={savePinText} >
-              <Text>Close</Text>
-            </Pressable>
+        <View style={styles.textInputContainer}>
+          <View style={styles.editBox}>
+            <TextInput
+              style={styles.textInput}
+              value={pinText}
+              onChangeText={setPinText}
+              placeholder="Enter text here..."
+            />
+            <View style={styles.modalButtonContainer}>
+              <Pressable style={styles.optionButtonLeft} onPress={savePinText}>
+                <Text>Save</Text>
+              </Pressable>
+              <Pressable style={styles.optionButtonRight} onPress={savePinText} >
+                <Text>Close</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       )}
@@ -154,14 +156,14 @@ const PinOverlay = ({ children }) => {
           visible={showConfirm}
           onRequestClose={() => setShowConfirm(false)}
         >
-          <View style={styles.modalBackground}>
-            <View style={[styles.modalContainer, styles.confirmModalBackground]}>
+          <View style={styles.textInputContainer}>
+            <View style={styles.deleteBox}>
               <Text style={styles.modalText}>Are you sure you want to delete this pin?</Text>
-              <View style={styles.modalButtonContainer}>
-                <Pressable style={styles.optionButtonLeft} onPress={() => setShowConfirm(false)}>
+              <View style={styles.rowFlex}>
+                <Pressable style={styles.deleteButton} onPress={() => setShowConfirm(false)}>
                   <Text>Cancel</Text>
                 </Pressable>
-                <Pressable style={styles.optionButtonRight} onPress={() => deletePin()} >
+                <Pressable style={styles.deleteButton} onPress={() => deletePin()} >
                   <Text>Yes</Text>
                 </Pressable>
               </View>
@@ -170,13 +172,26 @@ const PinOverlay = ({ children }) => {
         </Modal>
       )
       }
-    </View >
+    </View>
   );
 };
 
 const { x, y } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+  rowFlex: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  modalText: {
+    color: '#rgba(245, 245, 220, 1)',
+  },
+  textInputContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
   optionButtonLeft: {
     borderRadius: 5,
     backgroundColor: '#rgba(245, 245, 220, 1)',
@@ -191,13 +206,30 @@ const styles = StyleSheet.create({
     bottom: 10,
     right: 10,
   },
+  deleteButton: {
+    borderRadius: 5,
+    backgroundColor: '#rgba(245, 245, 220, 1)',
+    padding: 10,
+    flexDirection: 'row',
+    margin: 10,
+  },
   editBox: {
     width: 300,
-    height: 200,
+    height: 120,
     backgroundColor: '#1B1921',
     borderRadius: 10,
-    top: x/2,
-    left: y/2,
+    borderColor: '#rgba(245, 245, 220, 1)',
+    borderWidth: 5,
+  },
+  deleteBox: {
+    width: 300,
+    height: 100,
+    backgroundColor: '#1B1921',
+    borderRadius: 10,
+    borderColor: '#rgba(245, 245, 220, 1)',
+    borderWidth: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonStyle: {
     backgroundColor: '#rgba(245, 245, 220, 1)',
