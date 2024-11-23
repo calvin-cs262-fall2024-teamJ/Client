@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import { ImageBackground, View, Text, Pressable, StyleSheet, Dimensions, Image } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
+import React from 'react';
+import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 
 function HomeScreen({ navigation }) {
   
