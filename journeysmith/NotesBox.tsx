@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Button, TextInput, Text, Pressable, Dimensions, useWindowDimensions } from 'react-native';
+import { View, StyleSheet, Button, TextInput, Text, Pressable, Dimensions} from 'react-native';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 // Component to display a text box for notes.

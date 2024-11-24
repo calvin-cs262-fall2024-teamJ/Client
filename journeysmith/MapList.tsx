@@ -13,7 +13,6 @@ type RootStackParamList = {
 function MapList() {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { width, height } = Dimensions.get('window');
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
