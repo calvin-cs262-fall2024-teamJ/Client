@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         borderColor: '#rgba(245, 245, 220, 1)',
     },
     imageContainer: {
-        width: width-300,
+        width: width,
         height: height,
         position: 'absolute',
         top: 0,

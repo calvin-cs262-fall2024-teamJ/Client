@@ -23,7 +23,7 @@ const NotesBox = () => {
             {isVisible && (
                 <TextInput
                     style={styles.textBox}
-                    placeholder="Enter notes here..."
+                    placeholder="Enter general notes here..."
                     value={text}
                     onChangeText={setText}
                     multiline
@@ -45,16 +45,17 @@ const styles = StyleSheet.create({
         right: 10,
         width: 300,
         padding: 10,
+        backgroundColor: '#1B1921',
     },
     textBox: {
         width: 300,
-        height: height*3/4,
+        height: height,
         textAlignVertical: 'top', 
         textAlign: 'left', 
         borderColor: '#1B1921',
         borderWidth: 3,
         padding: 10, 
-        backgroundColor: 'white',
+        backgroundColor: '#rgba(245, 245, 220, 1)',
         position: 'relative',
         top: -40,
         right: 0,
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     textBoxButton: {
         textAlign: 'center',
         padding: 10,
-        backgroundColor: '#fff',
+        backgroundColor: '#rgba(245, 245, 220, 1)',
         borderColor: '#1B1921',
         borderWidth: 3,
         position: 'relative',

@@ -102,15 +102,15 @@ const PinOverlay = ({ children }) => {
 
       {showMenu && selectedPin && (
         // <Modal visible={showMenu}>
-        <View style={[styles.pinOption, { left: pinCoordinates.x - 30, top: pinCoordinates.y - 45 }]}>
+        <View style={[styles.pinOption, { left: pinCoordinates.x - 30, top: pinCoordinates.y - 100 }]}>
           <Pressable onPress={() => handleWritePin(selectedPin)}>
             <Image style={styles.icon} source={require('./assets/edit_icon.png')} />
           </Pressable>
-          <Pressable onPress={() => handleDeletePin(selectedPin.id)}>
-            <Image style={styles.icon} source={require('./assets/delete_icon.png')} />
-          </Pressable>
           <Pressable onPress={() => setShowText(true)}>
             <Image style={styles.icon} source={require('./assets/view_icon.png')} />
+          </Pressable>
+          <Pressable onPress={() => handleDeletePin(selectedPin.id)}>
+            <Image style={styles.icon} source={require('./assets/delete_icon.png')} />
           </Pressable>
           <Pressable onPress={() => handleMoveSelection()}>
             <Image style={styles.icon} source={require('./assets/move_icon.png')} />
@@ -123,7 +123,10 @@ const PinOverlay = ({ children }) => {
         <View style={styles.modalBackground}>
           <View style={styles.textModalContainer}>
             <Text style={styles.textModalContent}>{selectedPin.text}</Text>
-            <Button style={styles.optionButton} title="Close" onPress={() => setShowText(false)} />
+            <Pressable style={styles.optionButtonRight} onPress={() => setShowText(false)} >
+                <Text>Close</Text>
+            </Pressable>
+            {/* <Button style={styles.optionButton} title="Close" onPress={() => setShowText(false)} /> */}
           </View>
         </View>
       )}
@@ -253,8 +256,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   icon: {
-    width: 20,
-    height: 20,
+    width: 60,
+    height: 60,
   },
   overlayContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -299,7 +302,7 @@ const styles = StyleSheet.create({
   textModalContainer: {
     width: 300,
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#1B1921',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -308,6 +311,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 16,
     textAlign: 'center',
+    backgroundColor: '#rgba(245, 245, 220, 1)',
   },
   confirmModalBackground: {
     backgroundColor: 'lightyellow',
