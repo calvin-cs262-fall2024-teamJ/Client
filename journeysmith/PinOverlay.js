@@ -102,7 +102,7 @@ const PinOverlay = ({ children }) => {
 
       {showMenu && selectedPin && (
         // <Modal visible={showMenu}>
-        <View style={[styles.pinOption, { left: pinCoordinates.x - 30, top: pinCoordinates.y - 45 }]}>
+        <View style={[styles.pinOption, { left: pinCoordinates.x - 30, top: pinCoordinates.y - 100 }]}>
           <Pressable onPress={() => handleWritePin(selectedPin)}>
             <Image style={styles.icon} source={require('./assets/edit_icon.png')} />
           </Pressable>
