@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable, Dimensions, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { useNavigation, NavigationProp, BaseNavigationContainer } from '@react-navigation/native';
 
 //Define RootStackParamList
 type RootStackParamList = {
@@ -32,6 +32,9 @@ function MapList() {
       <View style={styles.topBanner}>
         <Image source={require('./assets/logo.png')} style={styles.logo}></Image>
         <Text style={styles.welcomeText}>Journeysmith</Text>
+        <Pressable onPress={() => navigation.navigate('Login')} style={styles.loginButton}>
+          <Text style={styles.loginText}>Login</Text>
+        </Pressable>
       </View>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.addButton} onPress={pickImage}>
@@ -54,7 +57,22 @@ function MapList() {
   );
 }
 
+const {width, height} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
+  loginButton: {
+    padding: 10,
+    backgroundColor: '#rgba(245, 245, 220, 1)',
+    borderRadius: 10,
+    marginLeft: 10,
+    position: 'absolute',
+    right: width/10,
+  },
+  loginText: {
+    color: '#1B1921',
+    fontSize: 28,
+    fontFamily: 'Enchanted Land',
+  },
   buttonContainer: {
     flex: 1,
     backgroundColor: '#1B1921',
