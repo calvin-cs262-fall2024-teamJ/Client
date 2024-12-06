@@ -4,7 +4,7 @@ import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 // Component to display a text box for notes.
 const NotesBox = () => {
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
     const [text, setText] = useState('');
 
     
