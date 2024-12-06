@@ -14,6 +14,7 @@ function MapList() {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { width, height } = Dimensions.get('window');
+  const [showHelp, setShowHelp] = useState(false);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -53,6 +54,24 @@ function MapList() {
           ))}
         </ScrollView>
       </View>
+
+      <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
+                    <Text style={styles.helpButtonText}>?</Text>
+                </Pressable>
+
+
+            {showHelp && (
+                <View style={styles.helpView}>
+                    <Text style={styles.helpText}>
+                    Adding a map: To add a map from the map list screen, press on the gray addition symbol. This will open your device’s file system and allow you to select an image file to upload by pressing the file twice, or by selecting the file and pressing select on the bottom right of the file manager window. 
+                    "
+                    </Text>
+                    <Pressable style={styles.closeHelp} onPress={() => setShowHelp(false)}>
+                        <Text style={styles.closeText}>Close</Text>
+                    </Pressable>
+                </View>
+            )}
+
     </>
   );
 }
@@ -133,6 +152,50 @@ const styles = StyleSheet.create({
   returnButtonText: {
     color: '#000',
   },
+  closeText: {
+    color: '#f5f5dc',
+    fontWeight: 'bold',
+},
+closeHelp: {
+    padding: 10,
+    position: 'absolute',
+    margin: 20,
+    top: height/40,
+    right: width/40,
+    backgroundColor: '#1B1921',
+    borderRadius: 100,
+},
+helpView: {
+    backgroundColor: '#rgba(245, 245, 220, 1)',
+    width: width/2,
+    height: height/2,
+    top: height/4,
+    right: width/4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    borderRadius: 10,
+    borderColor: '#1B1921',
+    borderWidth: 2,
+},
+helpText: {
+    color: '#1B1921',
+    fontSize: 16,
+    textAlign: 'center',
+},
+helpButton: {
+    padding: 10,
+    position: 'absolute',
+    margin: 20,
+    bottom: height/20,
+    left: width/20,
+    backgroundColor: '#rgba(245, 245, 220, 1)',
+    borderRadius: 100,
+},
+helpButtonText: {
+    color: '#1B1921',
+    fontWeight: 'bold',
+},
 });
 
 export default MapList;

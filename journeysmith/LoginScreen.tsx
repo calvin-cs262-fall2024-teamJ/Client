@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet, Alert, Dimensions } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './App';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showHelp, setShowHelp] = useState(false);
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
@@ -18,34 +19,103 @@ const LoginScreen = () => {
         }
     };
 
+
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor='#f5f5dc'
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor='#f5f5dc'
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-            <Pressable style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </Pressable>
-        </View>
+        <>
+            <View style={styles.container}>
+                <Text style={styles.title}>Login</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    placeholderTextColor='#f5f5dc'
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Password"
+                    placeholderTextColor='#f5f5dc'
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                />
+                <Pressable style={styles.button} onPress={handleLogin}>
+                    <Text style={styles.buttonText}>Login</Text>
+                </Pressable>
+                <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
+                    <Text style={styles.helpButtonText}>?</Text>
+                </Pressable>
+
+                
+            </View>
+
+            {showHelp && (
+                <View style={styles.helpView}>
+                    <Text style={styles.helpText}>
+                    To log in to the app, enter your email address you used 
+                    to create your account in the email bar. Enter your password 
+                    in the password bar, then press the login button below. "
+                    </Text>
+                    <Pressable style={styles.closeHelp} onPress={() => setShowHelp(false)}>
+                        <Text style={styles.closeText}>Close</Text>
+                    </Pressable>
+                </View>
+            )}
+
+        </>
     );
 };
 
+const {width, height} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
+    closeText: {
+        color: '#f5f5dc',
+        fontWeight: 'bold',
+    },
+    closeHelp: {
+        padding: 10,
+        position: 'absolute',
+        margin: 20,
+        top: height/40,
+        right: width/40,
+        backgroundColor: '#1B1921',
+        borderRadius: 100,
+    },
+    helpView: {
+        backgroundColor: '#rgba(245, 245, 220, 1)',
+        width: width/2,
+        height: height/2,
+        top: height/4,
+        right: width/4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        borderRadius: 10,
+        borderColor: '#1B1921',
+        borderWidth: 2,
+    },
+    helpText: {
+        color: '#1B1921',
+        fontSize: 16,
+        textAlign: 'center',
+    },
+    helpButton: {
+        padding: 10,
+        position: 'absolute',
+        margin: 20,
+        bottom: height/20,
+        left: width/20,
+        backgroundColor: '#rgba(245, 245, 220, 1)',
+        borderRadius: 100,
+    },
+    helpButtonText: {
+        color: '#1B1921',
+        fontWeight: 'bold',
+    },
     button: {
         padding: 10,
         backgroundColor: '#rgba(245, 245, 220, 1)',
