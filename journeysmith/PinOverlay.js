@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { View, StyleSheet, TouchableWithoutFeedback, Text, TouchableOpacity, Button, Modal, TextInput, Pressable, Image, Dimensions } from 'react-native';
 import DraggablePin from './DraggablePin';
 
@@ -174,6 +175,10 @@ const PinOverlay = ({ children }) => {
       }
     </View>
   );
+};
+
+PinOverlay.propTypes = {
+  children: PropTypes.node, // Validate that 'children' is a valid React node (string, number, element, etc.)
 };
 
 const { x, y } = Dimensions.get('window');
