@@ -55,9 +55,8 @@ const LoginScreen = () => {
             {showHelp && (
                 <View style={styles.helpView}>
                     <Text style={styles.helpText}>
-                    To log in to the app, enter your email address you used 
-                    to create your account in the email bar. Enter your password 
-                    in the password bar, then press the login button below. "
+                    Logging in:{"\n"}To log in to the app, enter the email address you used to create your account in the 'Email' field. 
+                    Enter your password in the 'Password' field, then press the 'Login' button below.
                     </Text>
                     <Pressable style={styles.closeHelp} onPress={() => setShowHelp(false)}>
                         <Text style={styles.closeText}>Close</Text>
@@ -80,8 +79,8 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         margin: 20,
-        top: height/40,
-        right: width/40,
+        top: 3,
+        right: 3,
         backgroundColor: '#1B1921',
         borderRadius: 100,
     },
@@ -107,8 +106,8 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         margin: 20,
-        bottom: height/20,
-        left: width/20,
+        bottom: height/50,
+        left: width/50,
         backgroundColor: '#rgba(245, 245, 220, 1)',
         borderRadius: 100,
     },

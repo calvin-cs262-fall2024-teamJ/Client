@@ -36,11 +36,11 @@ const MapScreen = () => {
             </View>
             
             <Pressable style={styles.returnButton} onPress={() => navigation.goBack()}>
-                <Text style={styles.returnButtonText}>Return to map list</Text>
+                <Text style={styles.returnButtonText}>Return to Map List</Text>
             </Pressable>
             <NotesBox />
 
-            <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
+             <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
                     <Text style={styles.helpButtonText}>?</Text>
                 </Pressable>
 
@@ -48,24 +48,26 @@ const MapScreen = () => {
             {showHelp && (
                 <View style={styles.helpView}>
                     <Text style={styles.helpText}>
-                    Placing a pin: To add a pin, press the button labelled place pin and press the map to add a pin where you press.
+                    Placing a pin:{"\n"} To place a pin, press the button labeled "Place Pin," then press on the map where you
+                    want the pin to appear.{"\n"}
 
-Writing notes to a pin: Press the desired pin, then select the pencil icon in the menu that appears. Enter text into the box, and select save. The pencil icon is the first icon on the left.
+                    {"\n"}Writing notes to a pin:{"\n"} Press the desired pin, then select the pencil icon from the menu that appears. 
+                    Enter your text into the box, then select "Save." The pencil icon is the first icon from the left in the menu.{"\n"}
 
-Viewing notes on a pin: Press the desired pin, then select the eye icon in the menu that appears. The eye icon is the second icon from the left.
+                    {"\n"}Viewing notes on a pin:{"\n"} Press the desired pin, then select the eye icon from the menu that appears. 
+                    The eye icon is the second icon from the left in the menu.{"\n"}
 
-Deleting a pin: Press the desired pin, then press the trash can icon in the menu that appears. Select confirm. The trash icon is the third icon from the left.
+                    {"\n"}Moving a pin:{"\n"} Press the desired pin, then select the four-sided arrow icon from the menu that appears. 
+                    Drag the pin to your desired location. The arrow icon is the third icon from the left in the menu. {"\n"}
 
-Moving a pin:
-Press the desired pin, then press the four sided arrow icon in the menu that appears. Then drag the pin to anywhere you desire. The arrow icon is the fourth icon from the left. 
+                    {"\n"}Deleting a pin:{"\n"} Press the desired pin, then select the trash can icon from the menu that appears. 
+                    Confirm the deletion by selecting "Delete." The trash icon is the fourth icon from the left in the menu.{"\n"}
 
-View all maps:
-When on the Map Screen, in the top left corner there will be button “Return to map list”
-The Map list displays all maps.
+                    {"\n"}View all maps:{"\n"} On the Map Screen, in the top left corner, select the "Return to Map List" button to
+                    view all campaigns in your account.{"\n"}
 
-Add general notes to a map: Press the toggle notes button to open the notes menu. Then enter your notes in the box that appears.
-
-"
+                    {"\n"}Add general notes to a map:{"\n"} Press the toggle notes button located in the top right corner to open 
+                    the notes menu. Enter your notes in the box that appears below the "Toggle Notes Box" button.{"\n"}
                     </Text>
                     <Pressable style={styles.closeHelp} onPress={() => setShowHelp(false)}>
                         <Text style={styles.closeText}>Close</Text>
@@ -125,15 +127,17 @@ const styles = StyleSheet.create({
     closeText: {
         color: '#f5f5dc',
         fontWeight: 'bold',
+        zIndex: 25,
     },
     closeHelp: {
         padding: 10,
         position: 'absolute',
         margin: 20,
-        top: height/40,
-        right: width/40,
+        top: 3,
+        right: 3,
         backgroundColor: '#1B1921',
         borderRadius: 100,
+        zIndex: 25,
     },
     helpView: {
         backgroundColor: '#rgba(245, 245, 220, 1)',
@@ -147,24 +151,28 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#1B1921',
         borderWidth: 2,
+        zIndex: 25,
     },
     helpText: {
         color: '#1B1921',
         fontSize: 16,
         textAlign: 'center',
+        zIndex: 25,
     },
     helpButton: {
         padding: 10,
         position: 'absolute',
         margin: 20,
-        bottom: height/20,
-        left: width/20,
+        bottom: height/50,
+        left: width/50,
         backgroundColor: '#rgba(245, 245, 220, 1)',
         borderRadius: 100,
+        zIndex: 25,
     },
     helpButtonText: {
         color: '#1B1921',
         fontWeight: 'bold',
+        zIndex: 25,
     },
 });
 

@@ -63,8 +63,9 @@ function MapList() {
             {showHelp && (
                 <View style={styles.helpView}>
                     <Text style={styles.helpText}>
-                    Adding a map: To add a map from the map list screen, press on the gray addition symbol. This will open your device’s file system and allow you to select an image file to upload by pressing the file twice, or by selecting the file and pressing select on the bottom right of the file manager window. 
-                    "
+                    Adding a map:{"\n"} To add a map from the map list screen, press the large plus (+) symbol. This will open your device’s 
+                    file system, allowing you to choose an image file. You can select the file by double-clicking it, or by selecting it 
+                    and clicking 'Select' in the bottom-right corner of the file manager window.
                     </Text>
                     <Pressable style={styles.closeHelp} onPress={() => setShowHelp(false)}>
                         <Text style={styles.closeText}>Close</Text>
@@ -125,11 +126,11 @@ const styles = StyleSheet.create({
   addButton: {
     width: 150,
     height: 150,
+    marginLeft: 30,
   },
   addButtonImage: {
     width: 150,
     height: 150,
-    marginLeft: 30,
   },
   imageContainer: {
     marginLeft: 40,
@@ -160,8 +161,8 @@ closeHelp: {
     padding: 10,
     position: 'absolute',
     margin: 20,
-    top: height/40,
-    right: width/40,
+    top: 3,
+    right: 3,
     backgroundColor: '#1B1921',
     borderRadius: 100,
 },
@@ -187,8 +188,8 @@ helpButton: {
     padding: 10,
     position: 'absolute',
     margin: 20,
-    bottom: height/20,
-    left: width/20,
+    bottom: height/50,
+    left: width/50,
     backgroundColor: '#rgba(245, 245, 220, 1)',
     borderRadius: 100,
 },
