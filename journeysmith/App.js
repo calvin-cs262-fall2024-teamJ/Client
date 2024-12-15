@@ -7,6 +7,7 @@ import PinOverlay from './PinOverlay';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './LoginScreen';
+import CreateScreen from './CreateScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const App = () => {
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="MapList" component={MapList} options={{ headerShown: false }} />
         <Stack.Screen name="MapScreen" component={MapScreenWithOverlay} options={{ headerShown: false }} />
+        <Stack.Screen name="CreateScreen" component={CreateScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>

@@ -3,8 +3,8 @@ import { View, Text, TextInput, Pressable, StyleSheet, Alert, Dimensions } from 
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './App';
 
-const LoginScreen = () => {
-    const [email, setEmail] = useState('');
+const CreateScreen = () => {
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showHelp, setShowHelp] = useState(false);
 
@@ -21,33 +21,54 @@ const LoginScreen = () => {
         }
     };
 
-    const handleLogin = async () => {
-        // Add your login logic hereg
+    const handleCreateAccount = async () => {
         const dungeonMasters = await fetchDungeonMasterData();
-        console.log(dungeonMasters);
+        if (!dungeonMasters) {
+            Alert.alert('Account Creation Failed', 'Unable to fetch dungeon master data');
+            return;
+        }
 
-        const dungeonMaster = dungeonMasters.find(dm => dm.nickname.trim() === email.trim() && dm.password.trim() === password.trim());
-        console.log(dungeonMaster);
-        if (!dungeonMaster) {
-            Alert.alert('Login Failed', 'Invalid email or password');
-        } else {
-            Alert.alert('Login Success!');
-            navigation.navigate('MapList');
+        const existingUser = dungeonMasters.find(dm => dm.nickname === username);
+        if (existingUser) {
+            Alert.alert('Account Creation Failed', 'Username already exists');
+            return;
+        }
+
+        try {
+            const response = await fetch('https://journeysmithwebbapp-f5azf8edebaqarcc.canadacentral-01.azurewebsites.net/dungeonmasters/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nickname: username,
+                    loginid: username,
+                    password: password,
+                }),
+            });
+
+            if (response.ok) {
+                Alert.alert('Account Created', 'Your account has been created successfully');
+                navigation.navigate('Login');
+            } else {
+                Alert.alert('Account Creation Failed', 'There was an error creating your account');
+            }
+        } catch (error) {
+            console.error('Error creating account:', error);
+            Alert.alert('Account Creation Failed', 'There was an error creating your account');
         }
     };
 
     return (
         <>
             <View style={styles.container}>
-                <Pressable onPress={() => navigation.navigate('CreateScreen')}><Text>Create Account</Text></Pressable>
-                <Text style={styles.title}>Login</Text>
+                <Text style={styles.title}>Create Account</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Email"
+                    placeholder="Username"
                     placeholderTextColor='#f5f5dc'
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
+                    value={username}
+                    onChangeText={setUsername}
                     autoCapitalize="none"
                 />
                 <TextInput
@@ -58,34 +79,29 @@ const LoginScreen = () => {
                     onChangeText={setPassword}
                     secureTextEntry
                 />
-                <Pressable style={styles.button} onPress={handleLogin}>
-                    <Text style={styles.buttonText}>Login</Text>
+                <Pressable style={styles.button} onPress={handleCreateAccount}>
+                    <Text style={styles.buttonText}>Create Account</Text>
                 </Pressable>
                 <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
                     <Text style={styles.helpButtonText}>?</Text>
                 </Pressable>
-
-                
             </View>
 
             {showHelp && (
                 <View style={styles.helpView}>
                     <Text style={styles.helpText}>
-                    To log in to the app, enter your email address you used 
-                    to create your account in the email bar. Enter your password 
-                    in the password bar, then press the login button below. "
+                    To create an account, enter your desired username and password, then press the "Create Account" button below.
                     </Text>
                     <Pressable style={styles.closeHelp} onPress={() => setShowHelp(false)}>
                         <Text style={styles.closeText}>Close</Text>
                     </Pressable>
                 </View>
             )}
-
         </>
     );
 };
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     closeText: {
@@ -96,17 +112,17 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         margin: 20,
-        top: height/40,
-        right: width/40,
+        top: height / 40,
+        right: width / 40,
         backgroundColor: '#1B1921',
         borderRadius: 100,
     },
     helpView: {
         backgroundColor: '#rgba(245, 245, 220, 1)',
-        width: width/2,
-        height: height/2,
-        top: height/4,
-        right: width/4,
+        width: width / 2,
+        height: height / 2,
+        top: height / 4,
+        right: width / 4,
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
@@ -123,8 +139,8 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         margin: 20,
-        bottom: height/20,
-        left: width/20,
+        bottom: height / 20,
+        left: width / 20,
         backgroundColor: '#rgba(245, 245, 220, 1)',
         borderRadius: 100,
     },
@@ -165,4 +181,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen;
+export default CreateScreen;
