@@ -24,7 +24,7 @@ const CreateAccountScreen = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/create-account', { nickname, loginid, password });
+      const response = await axios.post('journeysmithwebbapp-f5azf8edebaqarcc.canadacentral-01.azurewebsites.net/create-account', { nickname, loginid, password });
       console.log('Response:', response.data);
       if (response.data.success) {
         Alert.alert('Success', 'Account created successfully');

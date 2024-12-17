@@ -23,7 +23,7 @@ const LoginScreen = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/login', { loginid, password });
+      const response = await axios.post('journeysmithwebbapp-f5azf8edebaqarcc.canadacentral-01.azurewebsites.net/login', { loginid, password });
       console.log('Response:', response.data);
       if (response.data.success) {
         Alert.alert('Success', 'Login successful');
