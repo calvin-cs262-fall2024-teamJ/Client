@@ -118,24 +118,39 @@ const PinOverlay = ({ children }) => {
 )}
 
 
-     {showMenu && selectedPin && (
-       // <Modal visible={showMenu}>
-       <View style={[styles.pinOption, { left: pinCoordinates.x - 30, top: pinCoordinates.y - 100 }]}>
-         <Pressable onPress={() => handleWritePin(selectedPin)}>
-           <Image style={styles.icon} source={require('./assets/edit_icon.png')} />
-         </Pressable>
-         <Pressable onPress={() => setShowText(true)}>
-           <Image style={styles.icon} source={require('./assets/view_icon.png')} />
-         </Pressable>
-         <Pressable onPress={() => handleMoveSelection()}>
-           <Image style={styles.icon} source={require('./assets/move_icon.png')} />
-         </Pressable>
-         <Pressable onPress={() => handleDeletePin(selectedPin.id)}>
-           <Image style={styles.icon} source={require('./assets/delete_icon.png')} />
-         </Pressable>
-       </View>
-       /* </Modal> */
-     )}
+{showMenu && selectedPin && (
+    pinCoordinates.y > 150 ? (
+        <View style={[styles.pinOption, { left: pinCoordinates.x - 145, top: pinCoordinates.y - 85 }]}>
+            <Pressable onPress={() => handleWritePin(selectedPin)}>
+                <Image style={styles.icon} source={require('./assets/edit_icon.png')} />
+            </Pressable>
+            <Pressable onPress={() => setShowText(true)}>
+                <Image style={styles.icon} source={require('./assets/view_icon.png')} />
+            </Pressable>
+            <Pressable onPress={() => handleMoveSelection()}>
+                <Image style={styles.icon} source={require('./assets/move_icon.png')} />
+            </Pressable>
+            <Pressable onPress={() => handleDeletePin(selectedPin.id)}>
+                <Image style={styles.icon} source={require('./assets/delete_icon.png')} />
+            </Pressable>
+        </View>
+    ) : (
+        <View style={[styles.pinOption, { left: pinCoordinates.x - 145, top: pinCoordinates.y + 35 }]}>
+            <Pressable onPress={() => handleWritePin(selectedPin)}>
+                <Image style={styles.icon} source={require('./assets/edit_icon.png')} />
+            </Pressable>
+            <Pressable onPress={() => setShowText(true)}>
+                <Image style={styles.icon} source={require('./assets/view_icon.png')} />
+            </Pressable>
+            <Pressable onPress={() => handleMoveSelection()}>
+                <Image style={styles.icon} source={require('./assets/move_icon.png')} />
+            </Pressable>
+            <Pressable onPress={() => handleDeletePin(selectedPin.id)}>
+                <Image style={styles.icon} source={require('./assets/delete_icon.png')} />
+            </Pressable>
+        </View>
+    )
+)}
 
 
      {showText && selectedPin && (

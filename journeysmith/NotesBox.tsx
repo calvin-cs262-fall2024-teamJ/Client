@@ -41,11 +41,12 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        top: 30,
-        right: 10,
+        top: 0,
+        right: 0,
         width: 300,
-        padding: 10,
+        padding: 0,
         backgroundColor: '#1B1921',
+        zIndex: 1,
     },
     textBox: {
         width: 300,
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
         padding: 10, 
         backgroundColor: '#rgba(245, 245, 220, 1)',
         position: 'relative',
-        top: -40,
+        top: 0,
         right: 0,
     },
     textBoxButton: {
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
         borderColor: '#1B1921',
         borderWidth: 3,
         position: 'relative',
-        top: -40,
+        top: 0,
         right: 0,
         height: 45,
         width: 300,
