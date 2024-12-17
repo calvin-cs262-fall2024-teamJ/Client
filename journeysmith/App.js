@@ -7,6 +7,7 @@ import PinOverlay from './PinOverlay';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './LoginScreen';
+import CreateAccountScreen from './CreateAccountScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="CreateAccount" component={CreateAccountScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="MapList" component={MapList} options={{ headerShown: false }} />
         <Stack.Screen name="MapScreen" component={MapScreenWithOverlay} options={{ headerShown: false }} />

@@ -3,7 +3,8 @@ import { View, Text, TextInput, Pressable, StyleSheet, Alert, Dimensions } from 
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-const LoginScreen = () => {
+const CreateAccountScreen = () => {
+  const [nickname, setNickname] = useState('');
   const [loginid, setLoginid] = useState('');
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
@@ -11,37 +12,45 @@ const LoginScreen = () => {
 
   const navigation = useNavigation();
 
-  const handleLogin = async () => {
-    console.log('Login button pressed');
+  const handleCreateAccount = async () => {
+    console.log('Create Account button pressed');
     setIsError(false);
     setErrorMessage('');
 
-    if (!loginid || !password) {
+    if (!nickname || !loginid || !password) {
       setIsError(true);
       setErrorMessage('All fields are required');
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/login', { loginid, password });
+      const response = await axios.post('http://localhost:8080/create-account', { nickname, loginid, password });
       console.log('Response:', response.data);
       if (response.data.success) {
-        Alert.alert('Success', 'Login successful');
-        navigation.navigate('MapList');  
+        Alert.alert('Success', 'Account created successfully');
+        navigation.navigate('Login');
       } else {
         setIsError(true);
         setErrorMessage(response.data.message);
       }
     } catch (error) {
       setIsError(true);
-      setErrorMessage('An error occurred during login. Please try again.');
-      console.error('Login error:', error);
+      setErrorMessage('An error occurred during account creation. Please try again.');
+      console.error('Account creation error:', error);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Create Account</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nickname"
+        placeholderTextColor='#f5f5dc'
+        value={nickname}
+        onChangeText={setNickname}
+        autoCapitalize="none"
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -60,8 +69,8 @@ const LoginScreen = () => {
         secureTextEntry
       />
       {isError && <Text style={styles.errorText}>{errorMessage}</Text>}
-      <Pressable style={[styles.button, isError && styles.errorButton]} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <Pressable style={[styles.button, isError && styles.errorButton]} onPress={handleCreateAccount}>
+        <Text style={styles.buttonText}>Create Account</Text>
       </Pressable>
     </View>
   );
@@ -111,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default CreateAccountScreen;
