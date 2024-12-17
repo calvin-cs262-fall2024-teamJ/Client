@@ -118,7 +118,7 @@ function MapList() {
         >
           <View style={styles.textInputContainer}>
             <View style={styles.deleteBox}>
-              <Text style={styles.modalText}>Are you sure you want to delete this image?</Text>
+              <Text style={styles.modalText}>Are you sure you want to delete this map?</Text>
               <View style={styles.rowFlex}>
                 <Pressable style={styles.cancelButton} onPress={() => setShowConfirm(null)}>
                   <Text>Cancel</Text>
