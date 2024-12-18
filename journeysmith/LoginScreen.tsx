@@ -4,26 +4,30 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './App';
 
 const LoginScreen = () => {
+    // State to store email input
     const [email, setEmail] = useState('');
+    // State to store password input
     const [password, setPassword] = useState('');
+    // State to control the visibility of the help modal
     const [showHelp, setShowHelp] = useState(false);
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+    // Handle login button press
     const handleLogin = () => {
-        // Add your login logic here
         if (email === 'test@example.com' && password === 'password') {
+            // Navigate to MapList screen on successful login
             navigation.navigate('MapList');
         } else {
+            // Show alert on login failure
             Alert.alert('Login Failed', 'Invalid email or password');
         }
     };
 
-
-
     return (
         <>
             <View style={styles.container}>
+                {/* Login Fields */}
                 <Text style={styles.title}>Login</Text>
                 <TextInput
                     style={styles.input}
@@ -42,9 +46,13 @@ const LoginScreen = () => {
                     onChangeText={setPassword}
                     secureTextEntry
                 />
+
+                {/* Login Button */}
                 <Pressable style={styles.button} onPress={handleLogin}>
                     <Text style={styles.buttonText}>Login</Text>
                 </Pressable>
+                
+                {/* Help Button */}
                 <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
                     <Text style={styles.helpButtonText}>?</Text>
                 </Pressable>
@@ -52,6 +60,7 @@ const LoginScreen = () => {
                 
             </View>
 
+            {/* Help text */}
             {showHelp && (
                 <View style={styles.helpView}>
                     <Text style={styles.helpText}>
@@ -115,6 +124,7 @@ const styles = StyleSheet.create({
         color: '#1B1921',
         fontWeight: 'bold',
     },
+    // Login button
     button: {
         padding: 10,
         backgroundColor: '#rgba(245, 245, 220, 1)',

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { ImageBackground, View, Text, Pressable, StyleSheet, Dimensions, Image } from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+//___________________________________________________________________________________________________
+//__________________________________OBSOLETE SCREEN DO NOT USE_______________________________________
+//___________________________________________________________________________________________________
+
+
+import { View, Text, Pressable, StyleSheet, Dimensions, Image } from 'react-native';
 
 function HomeScreen({ navigation }) {
   

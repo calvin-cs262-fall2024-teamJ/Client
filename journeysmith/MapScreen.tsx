@@ -4,71 +4,83 @@ import { View, Image, StyleSheet, Pressable, Text, Dimensions } from 'react-nati
 import { useRoute, RouteProp, useNavigation, NavigationProp } from '@react-navigation/native';
 import NotesBox from './NotesBox';
 
+// Define route parameters type
 type RouteParams = {
     params: {
         imageUri: string;
     };
 };
 
+// Define RootStackParamList for navigation
 type RootStackParamList = {
     Home: undefined;
     MapList: undefined;
     MapScreen: { imageUri: string };
 };
 
+// Get device dimensions
 const { width, height } = Dimensions.get('window');
 
 // MapScreen component
 const MapScreen = () => {
+    // Get route and navigation objects
     const route = useRoute<RouteProp<RouteParams, 'params'>>();
     const { imageUri } = route.params;
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    // State to control the visibility of the help modal
     const [showHelp, setShowHelp] = useState(false);
 
     console.log('Received imageUri:', imageUri); // For debugging
 
     return (
         <>
+            {/* Contains uploaded image displayed as a map */}
             <View style={styles.imageContainer}>
                 {imageUri ? (
                     <Image source={{ uri: imageUri }} style={styles.image} />
                 ) : null}
             </View>
-            
+
+            {/* Navigates back to map screen */}
             <Pressable style={styles.returnButton} onPress={() => navigation.goBack()}>
                 <Text style={styles.returnButtonText}>Return to Map List</Text>
             </Pressable>
+
+            {/* Notes box */}
             <NotesBox />
+                
+            {/* Help button */}
+            <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
+                <Text style={styles.helpButtonText}>?</Text>
+            </Pressable>
 
-             <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
-                    <Text style={styles.helpButtonText}>?</Text>
-                </Pressable>
-
-
+            {/* Show help when help button pressed */}
             {showHelp && (
                 <View style={styles.helpView}>
+                    {/* Help text */}
                     <Text style={styles.helpText}>
-                    Placing a pin:{"\n"} To place a pin, press the button labeled "Place Pin," then press on the map where you
-                    want the pin to appear.{"\n"}
+                        Placing a pin:{"\n"} To place a pin, press the button labeled "Place Pin," then press on the map where you
+                        want the pin to appear.{"\n"}
 
-                    {"\n"}Writing notes to a pin:{"\n"} Press the desired pin, then select the pencil icon from the menu that appears. 
-                    Enter your text into the box, then select "Save." The pencil icon is the first icon from the left in the menu.{"\n"}
+                        {"\n"}Writing notes to a pin:{"\n"} Press the desired pin, then select the pencil icon from the menu that appears.
+                        Enter your text into the box, then select "Save." The pencil icon is the first icon from the left in the menu.{"\n"}
 
-                    {"\n"}Viewing notes on a pin:{"\n"} Press the desired pin, then select the eye icon from the menu that appears. 
-                    The eye icon is the second icon from the left in the menu.{"\n"}
+                        {"\n"}Viewing notes on a pin:{"\n"} Press the desired pin, then select the eye icon from the menu that appears.
+                        The eye icon is the second icon from the left in the menu.{"\n"}
 
-                    {"\n"}Moving a pin:{"\n"} Press the desired pin, then select the four-sided arrow icon from the menu that appears. 
-                    Drag the pin to your desired location. The arrow icon is the third icon from the left in the menu. {"\n"}
+                        {"\n"}Moving a pin:{"\n"} Press the desired pin, then select the four-sided arrow icon from the menu that appears.
+                        Drag the pin to your desired location. The arrow icon is the third icon from the left in the menu. {"\n"}
 
-                    {"\n"}Deleting a pin:{"\n"} Press the desired pin, then select the trash can icon from the menu that appears. 
-                    Confirm the deletion by selecting "Delete." The trash icon is the fourth icon from the left in the menu.{"\n"}
+                        {"\n"}Deleting a pin:{"\n"} Press the desired pin, then select the trash can icon from the menu that appears.
+                        Confirm the deletion by selecting "Delete." The trash icon is the fourth icon from the left in the menu.{"\n"}
 
-                    {"\n"}View all maps:{"\n"} On the Map Screen, in the top left corner, select the "Return to Map List" button to
-                    view all campaigns in your account.{"\n"}
+                        {"\n"}View all maps:{"\n"} On the Map Screen, in the top left corner, select the "Return to Map List" button to
+                        view all campaigns in your account.{"\n"}
 
-                    {"\n"}Add general notes to a map:{"\n"} Press the toggle notes button located in the top right corner to open 
-                    the notes menu. Enter your notes in the box that appears below the "Toggle Notes Box" button.{"\n"}
+                        {"\n"}Add general notes to a map:{"\n"} Press the toggle notes button located in the top right corner to open
+                        the notes menu. Enter your notes in the box that appears below the "Toggle Notes Box" button.{"\n"}
                     </Text>
+                    {/* Close help button */}
                     <Pressable style={styles.closeHelp} onPress={() => setShowHelp(false)}>
                         <Text style={styles.closeText}>Close</Text>
                     </Pressable>
@@ -163,8 +175,8 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         margin: 20,
-        bottom: height/50,
-        left: width/50,
+        bottom: height / 50,
+        left: width / 50,
         backgroundColor: '#rgba(245, 245, 220, 1)',
         borderRadius: 100,
         zIndex: 25,

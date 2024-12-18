@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable, Dimensions, ScrollView, TextInput, Modal } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { useNavigation, NavigationProp, BaseNavigationContainer } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 // Define RootStackParamList
 type RootStackParamList = {
@@ -11,20 +11,28 @@ type RootStackParamList = {
 };
 
 function MapList() {
+  // State to store selected images
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  // Navigation hook
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { width, height } = Dimensions.get('window');
+  // State to control the visibility of the help modal
   const [showHelp, setShowHelp] = useState(false);
+  // State to store image names
   const [imageNames, setImageNames] = useState<{ [key: string]: string }>({});
+  // State to store the text being edited
   const [editingText, setEditingText] = useState<string | null>(null);
-  const [textColors, setTextColors] = useState<{ [key: string]: string }>({}); // Store text colors for each input
-  const [showConfirm, setShowConfirm] = useState<number | null>(null); // Store the index of the image to be deleted
+  // State to store text colors for each input
+  const [textColors, setTextColors] = useState<{ [key: string]: string }>({});
+  // State to store the index of the image to be deleted
+  const [showConfirm, setShowConfirm] = useState<number | null>(null);
 
+  // Handle text change for image names
   const handleTextChange = (text: string, index: number) => {
     setImageNames({ ...imageNames, [index]: text });
     setTextColors({ ...textColors, [index]: 'white' }); // Set a constant color
   };
 
+  // Function to pick an image from the library
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -37,6 +45,7 @@ function MapList() {
     }
   };
 
+  // Function to delete an image by index
   const deleteImage = (index: number) => {
     const newSelectedImages = selectedImages.filter((_, i) => i !== index);
     const newImageNames = { ...imageNames };
@@ -49,8 +58,10 @@ function MapList() {
     setShowConfirm(null); // Close the confirmation modal
   };
 
+  
   return (
     <>
+      {/* Top banner */}
       <View style={styles.topBanner}>
         <Image source={require('./assets/logo.png')} style={styles.logo}></Image>
         <Text style={styles.welcomeText}>Journeysmith</Text>
@@ -59,12 +70,14 @@ function MapList() {
         </Pressable>
       </View>
       <View style={styles.buttonContainer}>
+        {/* Add map button */}
         <Pressable style={styles.addButton} onPress={pickImage}>
           <Image
             source={require('./assets/add-map-button.png')}
             style={styles.addButtonImage}
           />
         </Pressable>
+        {/* View containing added maps */}
         <ScrollView horizontal>
           {selectedImages.map((imageUri, index) => (
             <View key={index} style={styles.imageContainer}>
@@ -92,10 +105,12 @@ function MapList() {
         </ScrollView>
       </View>
 
+      {/* Button to pull up help text */}
       <Pressable style={styles.helpButton} onPress={() => setShowHelp(true)}>
         <Text style={styles.helpButtonText}>?</Text>
       </Pressable>
 
+      {/* Help Text */}
       {showHelp && (
         <View style={styles.helpView}>
           <Text style={styles.helpText}>
@@ -109,6 +124,7 @@ function MapList() {
         </View>
       )}
 
+      {/* Ask to confirm deleting map */}
       {showConfirm !== null && (
         <Modal
           transparent={true}
@@ -151,6 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontFamily: 'Enchanted Land',
   },
+  // Container containing maps
   buttonContainer: {
     flex: 1,
     backgroundColor: '#1B1921',
@@ -161,6 +178,7 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: 'row',
   },
+  // Contains button and logo
   topBanner: {
     position: 'absolute',
     top: 0,
