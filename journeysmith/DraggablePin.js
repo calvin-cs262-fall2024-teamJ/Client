@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { View, PanResponder, StyleSheet, Text, Image } from 'react-native';
 
+// DraggablePin component definition
 const DraggablePin = ({ initialPosition, onDragEnd, draggable }) => {
+  // State to store the current position of the pin
   const [position, setPosition] = useState(initialPosition);
+  // State to track if the pin is being dragged
   const [isDragging, setIsDragging] = useState(false);
 
+  // PanResponder to handle drag gestures
   const panResponder = PanResponder.create({
+    // Determine if the pan responder should start
     onStartShouldSetPanResponder: () => draggable,
+    // Handle the start of the pan responder
     onPanResponderGrant: () => {
       if (draggable) {
         setIsDragging(true);
       }
     },
+    // Handle the movement of the pan responder
     onPanResponderMove: (e, gestureState) => {
       if (isDragging) {
         setPosition({
@@ -20,15 +27,17 @@ const DraggablePin = ({ initialPosition, onDragEnd, draggable }) => {
         });
       }
     },
+    // Handle the release of the pan responder
     onPanResponderRelease: () => {
       if (isDragging) {
         setIsDragging(false);
-        onDragEnd(position);
+        onDragEnd(position); // Call the onDragEnd callback with the final position
       }
     },
   });
 
   return (
+    // Render the draggable pin
     <View
       {...panResponder.panHandlers}
       style={[styles.pin, { top: position.y, left: position.x, backgroundColor: isDragging ? 'blue' : 'transparent' }]}
@@ -38,6 +47,7 @@ const DraggablePin = ({ initialPosition, onDragEnd, draggable }) => {
   );
 };
 
+// Styles for the draggable pin
 const styles = StyleSheet.create({
   pin: {
     position: 'absolute',
@@ -53,4 +63,6 @@ const styles = StyleSheet.create({
   },
 });
 
+
 export default DraggablePin;
+
